@@ -21,6 +21,11 @@ export const styles = {
   text: {
     fontSize: FONT_SIZE.md,
     color: COLORS.gray1
+  },
+  btnDesconectar: {
+    marginTop: 40,
+    marginLeft: 12,
+    marginRight: 12
   }
 
 }

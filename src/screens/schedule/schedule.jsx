@@ -1,21 +1,46 @@
-import { Text, View } from 'react-native';
+import { Alert, Text, View } from 'react-native';
 import { styles } from './schedule.style';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 import { ptBR } from '../../constants/calendar';
 import { useState } from 'react';
 import { Picker } from '@react-native-picker/picker';
 import Button from '../../components/button/button.jsx';
+import api from '../../constants/api.js';
+import { useEffect } from 'react';
 
 LocaleConfig.locales['pt-br'] = ptBR;
 LocaleConfig.defaultLocale = 'pt-br';
 
-function Schedule() {
+function Schedule(props) {
 
     // Projeto Calendario: https://github.com/wix/react-native-calendars
     // Projeto Picker: https://github.com/react-native-picker/picker
+  const id_doctor = props.route.params.id_doctor;
+  const id_service = props.route.params.id_service;
 
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [selectedHour, setSelectedHour] = useState('');
+
+  async function ClickBooking() {
+
+    try {
+        const response = await api.post('/appointments', {
+            id_doctor,
+            id_service,
+            booking_date: selectedDate,
+            booking_hour: selectedHour
+        });
+
+        if (response.data?.id_appointment)
+          props.navigation.popToTop();
+
+    } catch (error) {
+        if (error.response?.data.error)
+            Alert.alert(error.response.data.error);
+        else
+        Alert.alert('Ocorreu um erro. Tente novamente mais tarde');
+    }
+  }
 
   return <View style={styles.container}>
     <View>
@@ -45,7 +70,7 @@ function Schedule() {
     </View>
 
       <View>
-        <Button text="Confirmar Reserva" />
+        <Button text="Confirmar Reserva" onPress={ClickBooking} />
       </View>
 
     </View>

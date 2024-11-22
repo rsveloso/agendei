@@ -1,4 +1,3 @@
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import icon from "../../constants/icon.js";
 
@@ -10,8 +9,7 @@ import { Image } from 'react-native';
 const Tab = createBottomTabNavigator();
 
 function Main() {
-    return <NavigationContainer>
-            <Tab.Navigator>
+    return <Tab.Navigator>
                 <Tab.Screen name="Home" component={AbaHome} options={{
                     headerTitleAlign: 'center',
                     headerTitle: () => {
@@ -35,6 +33,7 @@ function Main() {
                         return <Image source={icon.logo} style={{ width: 125, height: 29 }} />
                     },
                     tabBarShowLabel: false,
+                    unmountOnBlur: true,
                     tabBarIcon: ({focused}) => {
                         return <Image source={icon.calendar} style={
                             {
@@ -52,6 +51,7 @@ function Main() {
                         return <Image source={icon.logo} style={{ width: 125, height: 29 }} />
                     },
                     tabBarShowLabel: false,
+                    unmountOnBlur: true,
                     tabBarIcon: ({focused}) => {
                         return <Image source={icon.profile} style={
                             {
@@ -63,7 +63,6 @@ function Main() {
                     }
                 }} />
             </Tab.Navigator>
-        </NavigationContainer>
 }
 
 export default Main
